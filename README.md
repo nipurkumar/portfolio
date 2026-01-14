@@ -1,15 +1,48 @@
-# My Portfolio Wesbite - Overview 🚀
+# 🌐 Nipur Kumar — Portfolio
 
-This repository contains the open source version of my porfolio website.
-Do check it out!
+A modern, animated 3D portfolio built with React, Three.js, GSAP, and Lenis to showcase my work as a Blockchain & Full Stack Developer.
 
-## Instructions 🛠️
+![Portfolio Preview](./public/preview.png)
 
-I have modified the gsap club plugins with the trial plugins, but with the trial plugin you cannot host it🔴. So for Club plugins, Check out here: https://gsap.com/docs/v3/Installation/
+---
 
-**Techstack** - React, TypeScript, GSAP, ThreeJS, WebGL, HTML, Css, JavaScript
+## 🚀 Live Demo
 
-![Protfolio-Preview](https://github.com/user-attachments/assets/3c4557e7-6392-4928-b8a9-7b2476ef4edd)
+👉 https://nipur-portfolio.vercel.app
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** React + TypeScript + Vite
+- **3D & Animations:** Three.js, GSAP, ScrollTrigger
+- **Smooth Scrolling:** Lenis
+- **Styling:** CSS3 (custom design system)
+- **Hosting:** Vercel
+
+---
+
+## ✨ Features
+
+- Interactive 3D character with mouse tracking
+- Smooth scroll navigation
+- Animated text reveals
+- Responsive design
+- Custom AI-generated logo & branding
+- Optimized for performance
+
+---
+
+## 📦 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/nipur-portfolio.git
+cd nipur-portfolio
+npm install
+npm run dev
+
 
 ## License
 
