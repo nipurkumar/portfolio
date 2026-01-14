@@ -10,7 +10,6 @@ export let lenis: Lenis | null = null;
 
 const Navbar = () => {
   useEffect(() => {
-    // Initialize Lenis smooth scroll
     lenis = new Lenis({
       duration: 1.7,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -22,60 +21,57 @@ const Navbar = () => {
       infinite: false,
     });
 
-    // Start paused
     lenis.stop();
 
-    // Handle smooth scroll animation frame
     function raf(time: number) {
       lenis?.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Handle navigation links
-    let links = document.querySelectorAll(".header ul a");
+    let links = document.querySelectorAll(".header ul a[data-href]");
     links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
+      elem.addEventListener("click", (e) => {
         if (window.innerWidth > 1024) {
           e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
+          const el = e.currentTarget as HTMLAnchorElement;
+          const section = el.getAttribute("data-href");
           if (section && lenis) {
             const target = document.querySelector(section) as HTMLElement;
             if (target) {
-              lenis.scrollTo(target, {
-                offset: 0,
-                duration: 1.5,
-              });
+              lenis.scrollTo(target, { offset: 0, duration: 1.5 });
             }
           }
         }
       });
     });
 
-    // Handle resize
-    window.addEventListener("resize", () => {
-      lenis?.resize();
-    });
+    window.addEventListener("resize", () => lenis?.resize());
 
     return () => {
       lenis?.destroy();
     };
   }, []);
+
   return (
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
+          <img
+            src="/images/logo.png"
+            alt="Nipur Logo"
+            className="navbar-logo"
+          />
         </a>
+
         <a
-          href="mailto:example@mail.com"
+          href="mailto:nipurkumar84@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
+          nipurkumar84@gmail.com
         </a>
+
         <ul>
           <li>
             <a data-href="#about" href="#about">

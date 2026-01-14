@@ -208,3 +208,19 @@
     height: auto;
   }
 }
+.work-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.work-links a {
+  font-size: 0.85rem;
+  color: #9aa0a6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.work-links a:hover {
+  color: #ffffff;
+}

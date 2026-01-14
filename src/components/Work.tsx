@@ -9,45 +9,46 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
   useEffect(() => {
-    let translateX: number = 0;
+    const container = document.querySelector(".work-container");
+    const boxes = document.getElementsByClassName("work-box");
+    if (!container || boxes.length === 0) return;
 
-    function setTranslateX() {
-      const box = document.getElementsByClassName("work-box");
-      if (box.length === 0) return;
-      const rectLeft = document
-        .querySelector(".work-container")!
-        .getBoundingClientRect().left;
-      const rect = box[0].getBoundingClientRect();
-      const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      let padding: number =
-        parseInt(window.getComputedStyle(box[0]).padding) / 2;
-      translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-    }
+    // Safe calculation
+    const rectLeft = container.getBoundingClientRect().left || 0;
+    const rect = boxes[0].getBoundingClientRect();
+    const parentWidth =
+      boxes[0].parentElement?.getBoundingClientRect().width || 0;
+    const padding =
+      parseInt(window.getComputedStyle(boxes[0]).paddingLeft) || 0;
 
-    setTranslateX();
+    const translateX = Math.max(
+      rect.width * boxes.length - (rectLeft + parentWidth) + padding,
+      0
+    );
+    if (translateX <= 0) return;
 
-    let timeline = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: ".work-section",
         start: "top top",
-        end: `+=${translateX}`, // Use actual scroll width
+        end: `+=${translateX}`,
         scrub: true,
         pin: true,
         id: "work",
       },
     });
 
-    timeline.to(".work-flex", {
-      x: -translateX,
-      ease: "none",
-    });
+    timeline.to(".work-flex", { x: -translateX, ease: "none" });
 
-    // Clean up
     return () => {
       timeline.kill();
       ScrollTrigger.getById("work")?.kill();
     };
   }, []);
+
+  // Safe fallback for projects
+  const projects = config.projects || [];
+
   return (
     <div className="work-section" id="work">
       <div className="work-container section-container">
@@ -55,21 +56,67 @@ const Work = () => {
           My <span>Work</span>
         </h2>
         <div className="work-flex">
-          {config.projects.map((project, index) => (
-            <div className="work-box" key={project.id}>
+          {projects.length === 0 && (
+            <p style={{ color: "white" }}>No projects to display</p>
+          )}
+          {projects.map((project, index) => (
+            <div className="work-box" key={project.id || index}>
               <div className="work-info">
                 <div className="work-title">
                   <h3>0{index + 1}</h3>
-
                   <div>
-                    <h4>{project.title}</h4>
-                    <p>{project.category}</p>
+                    <h4>{project.title || "Untitled"}</h4>
+                    <p>{project.category || "Unknown"}</p>
                   </div>
                 </div>
                 <h4>Tools and features</h4>
-                <p>{project.technologies}</p>
+                <p>{project.technologies || "N/A"}</p>
+
+                {/* Project Links */}
+                <div className="work-links">
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Live Demo
+                    </a>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
               </div>
-              <WorkImage image={project.image} alt={project.title} />
+
+              {/* Safe WorkImage */}
+              {project.image || project.video ? (
+                <WorkImage
+                  image={project.image || ""}
+                  video={project.video || ""}
+                  alt={project.title}
+                  link={project.live || ""}
+                />
+              ) : (
+                <div
+                  style={{
+                    height: "200px",
+                    background: "#222",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "white",
+                  }}
+                >
+                  No Media
+                </div>
+              )}
             </div>
           ))}
         </div>
